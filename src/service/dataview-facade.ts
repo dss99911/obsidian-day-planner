@@ -81,11 +81,23 @@ export function sTaskToTask(sTask: STask, day: Moment): Task {
   };
 }
 
-export function getScheduledDay(sTask: STask) {
+export function getScheduledDay(sTask: STask, today: string) {
   const scheduledPropDay = sTask.scheduled?.toFormat?.("yyyy-MM-dd"); // luxon
+  const duePropDay = sTask.due?.toFormat?.("yyyy-MM-dd"); // luxon
+
   const dailyNoteDay = getDateFromPath(sTask.path, "day")?.format(
     "YYYY-MM-DD", // moment
   );
+  let scheduedDay;
+  if (scheduledPropDay && duePropDay) {
+    scheduedDay = scheduledPropDay.localeCompare(duePropDay) < 0 ? scheduledPropDay : duePropDay
+  } else {
+    scheduedDay = scheduledPropDay || duePropDay || dailyNoteDay;
+  }
 
-  return scheduledPropDay || dailyNoteDay;
+  if (!sTask.completed && scheduedDay && scheduedDay.localeCompare(today) < 0) {
+    scheduedDay = today
+  }
+
+  return scheduedDay
 }

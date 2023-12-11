@@ -23,9 +23,14 @@ export function useVisibleTasks({ dataviewTasks }: UseVisibleTasksProps) {
         );
       }
 
+      const today = window.moment().format("YYYY-MM-DD")
+      function getDay(sTask: STask) {
+        return getScheduledDay(sTask, today)
+      }
+
       const dayToSTasksLookup: Record<string, STask[]> = Object.fromEntries(
         $dataviewTasks
-          .groupBy(getScheduledDay)
+          .groupBy(getDay)
           .map(({ key, rows }) => [key, rows.array()])
           .array(),
       );
