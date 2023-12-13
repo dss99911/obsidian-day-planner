@@ -99,5 +99,9 @@ export function getScheduledDay(sTask: STask, today: string) {
     scheduedDay = today
   }
 
+  if (sTask.completed && today.localeCompare(sTask.completion?.toFormat?.("yyyy-MM-dd")) == 0) {
+    scheduedDay = today
+  }
+
   return scheduedDay
 }

@@ -7,6 +7,8 @@
   import TaskComponent from "./task.svelte";
 
   export let task: Task;
+  export let handleTaskMouseUp;
+  export let handleToogle;
 
   $: ({ height, offset, relationToNow, backgroundColor, properContrastColors } =
     useTaskVisuals(task, {
@@ -25,7 +27,8 @@
   --text-normal={$properContrastColors.normal}
   relationToNow={$relationToNow}
   {task}
-  on:mouseup
+  {handleToogle}
+  {handleTaskMouseUp}
 >
   <slot />
 </TaskComponent>

@@ -40,6 +40,7 @@
     handleTaskMouseUp,
     handleGripMouseDown,
     handleUnscheduledTaskGripMouseDown,
+    handleToogle,
     handleMouseEnter,
     pointerOffsetY,
   } = getEditHandlers(actualDay));
@@ -63,11 +64,14 @@
           --task-height="{$settings.defaultDurationMinutes *
             $settings.zoomLevel}px"
           {task}
-          on:mouseup={() => handleTaskMouseUp(task)}
+          {handleToogle}
+          {handleTaskMouseUp}
         >
           <Grip
             cursor={gripCursor}
-            on:mousedown={() => handleUnscheduledTaskGripMouseDown(task)}
+            on:mousedown={(e) => {
+              handleUnscheduledTaskGripMouseDown(task)
+            }}
           />
         </Task>
       {/each}
@@ -91,7 +95,11 @@
       on:mouseenter={handleMouseEnter}
     >
       {#each $displayedTasks.withTime as task (getRenderKey(task))}
-        <ScheduledTask {task} on:mouseup={() => handleTaskMouseUp(task)}>
+        <ScheduledTask
+          {task}
+          {handleToogle}
+          {handleTaskMouseUp}
+        >
           <Grip
             cursor={gripCursor}
             on:mousedown={(event) => handleGripMouseDown(event, task)}

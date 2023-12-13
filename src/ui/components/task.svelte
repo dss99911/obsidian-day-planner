@@ -2,11 +2,20 @@
   
 import type { UnscheduledTask } from "../../types";
 
-  import RenderedMarkdown from "./rendered-markdown.svelte";
-
   export let task: UnscheduledTask;
+  export let handleTaskMouseUp;
+  export let handleToogle;
   // todo: this should live in useTaskVisuals
   export let relationToNow = "";
+  let checked = task.text.startsWith("- [x]");
+
+  function handleCheckBoxClick() {
+    handleToogle(task);
+  }
+
+  function handleTextClick() {
+    handleTaskMouseUp(task);
+  }
 </script>
 
 <div
@@ -20,7 +29,14 @@ import type { UnscheduledTask } from "../../types";
     on:mousedown={(event) => event.stopPropagation()}
     on:mouseup
   >
-    <RenderedMarkdown {task} />
+    <input
+      type="checkbox"
+      bind:checked={checked}
+      on:click={handleCheckBoxClick}
+    />
+    <div on:click={handleTextClick}>
+      {task.text.replace(/^- \[.?\]/, '')}
+    </div>
     <slot />
   </div>
 </div>

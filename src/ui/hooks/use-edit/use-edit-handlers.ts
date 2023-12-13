@@ -69,11 +69,16 @@ export function useEditHandlers({
     startEdit({ task: withAddedTime, mode: EditMode.DRAG, day });
   }
 
+  function handleToogle(task: UnscheduledTask) {
+    obsidianFacade.app.plugins.getPlugin("obsidian-tasks-plugin").toogleTask(task.location.line, task.location.path)
+  }
+
   return {
     handleGripMouseDown,
     handleContainerMouseDown,
     handleResizerMouseDown,
     handleTaskMouseUp,
     handleUnscheduledTaskGripMouseDown,
+    handleToogle
   };
 }
